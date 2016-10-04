@@ -1,0 +1,21 @@
+{
+  "name": "angular2-grocery-list",
+  "version": "1.0.0",
+  "private": true,
+  "description": "grocery list using MEAN2 (angular2)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.3.0",
+    "gulp-task-listing": "^1.0.1"
+  }
+}
