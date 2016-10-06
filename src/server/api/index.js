@@ -6,7 +6,7 @@ router.get('/', function(req, res){
 
 router.get('/category', function(req, res) {
 	// get 'all items'
-	// TODO: add paging
+	// TODO: add paging; get actual data
 	
 	var mockData = [{
 						id: 1234,
