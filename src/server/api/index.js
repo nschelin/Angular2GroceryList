@@ -5,7 +5,8 @@ router.get('/', function(req, res){
 })
 
 router.get('/category', function(req, res) {
-	// get 'all items' - add paging
+	// get 'all items'
+	// TODO: add paging
 	
 	var mockData = [{
 						id: 1234,
@@ -24,19 +25,27 @@ router.get('/category', function(req, res) {
 
 router.get('/category/:id', function(req, res){
 	var id = req.body.id;
-	// get item from db
-	var mockData = { id: 1234, name: "Dariy" };
+	// TODO: get item from db
+	var mockData = { id: 1234, name: "Dairy" };
 	res.json(mockData);
 
 });
 
+router.put('/category/:id', function(req, res){
+	var id = req.body.id;
+	var json = req.body;
+
+	// TODO: get item from db and make changes
+
+	res.send(json);
+})
 
 router.post('/category',function(req, res) {
 	var json = req.body;
 
-	// save to db
+	// TODO: create item and save to db
 
-	res.json({ ok: true });
+	res.json(json);
 })
 
 // router.get('/test', function(req,res){
