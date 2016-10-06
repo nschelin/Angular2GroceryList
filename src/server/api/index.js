@@ -1,55 +1,27 @@
 const router = require('express').Router();
+const CategoryController = require('./controllers/category');
+const ProductController = require('./controllers/product');
+const GroceryListController = require('./controllers/grocerylist');
 
 router.get('/', function(req, res){
 	res.end('Hello from api');
 })
 
-router.get('/category', function(req, res) {
-	// get 'all items'
-	// TODO: add paging; get actual data
-	
-	var mockData = [{
-						id: 1234,
-						name: 'Dairy'
-					},
-					{
-						id: 1235,
-						name: 'Meat'
-					},
-					{
-						id: 1236,
-						name: 'Produce'
-					}];
-	res.json(mockData);
-})
+router.get('/category', CategoryController.list);
+router.post('/category',CategoryController.new);
+router.put('/category/:id', CategoryController.update);
+router.get('/category/:id', CategoryController.detail);
 
-router.get('/category/:id', function(req, res){
-	var id = req.body.id;
-	// TODO: get item from db
-	var mockData = { id: 1234, name: "Dairy" };
-	res.json(mockData);
+router.get('/product', ProductController.list);
+router.post('/product',ProductController.new);
+router.put('/product/:id', ProductController.update);
+router.get('/product/:id', ProductController.detail);
 
-});
+router.get('/grocerylist', GroceryListController.list);
+router.post('/grocerylist',GroceryListController.new);
+router.put('/grocerylist/:id', GroceryListController.update);
+router.get('/grocerylist/:id', GroceryListController.detail);
 
-router.put('/category/:id', function(req, res){
-	var id = req.body.id;
-	var json = req.body;
 
-	// TODO: get item from db and make changes
-
-	res.send(json);
-})
-
-router.post('/category',function(req, res) {
-	var json = req.body;
-
-	// TODO: create item and save to db
-
-	res.json(json);
-})
-
-// router.get('/test', function(req,res){
-// 	res.end('Hello from test');
-// })
 
 module.exports = router;

@@ -1,4 +1,7 @@
+// node
 const browserSync = require('browser-sync');
+
+// gulp
 const gulp = require('gulp');
 const $ = require('gulp-load-plugins')({ lazy: true });
 
