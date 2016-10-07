@@ -9,17 +9,17 @@ router.get('/', function(req, res){
 
 router.get('/category', CategoryController.list);
 router.post('/category',CategoryController.new);
-router.put('/category/:id', CategoryController.update);
+router.patch('/category/:id', CategoryController.update);
 router.get('/category/:id', CategoryController.detail);
 
 router.get('/product', ProductController.list);
 router.post('/product',ProductController.new);
-router.put('/product/:id', ProductController.update);
+router.patch('/product/:id', ProductController.update);
 router.get('/product/:id', ProductController.detail);
 
 router.get('/grocerylist', GroceryListController.list);
 router.post('/grocerylist',GroceryListController.new);
-router.put('/grocerylist/:id', GroceryListController.update);
+router.patch('/grocerylist/:id', GroceryListController.update);
 router.get('/grocerylist/:id', GroceryListController.detail);
 
 

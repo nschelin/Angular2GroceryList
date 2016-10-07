@@ -1,10 +1,15 @@
 'use strict';
+
+// makes config available to other modules within
+global.appConfig = require('./config');
+
 const express = require('express');
 const http = require('http');
 const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+
 
 // route modules
 const routes = require('./routes');

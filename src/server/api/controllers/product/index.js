@@ -3,7 +3,12 @@ module.exports.list = function (req, res) {
 	// get 'all items'
 	// TODO: add paging; get actual data
 	
-	var mockData = [{
+	var page = req.query.page || 0;
+	if(page != 0)
+		page -= 1;
+	var start = appConfig.PAGE_SIZE * page;
+	var end = start + appConfig.PAGE_SIZE;
+	var products = [{
 						id: 4567,
 						name: 'Milk',
 						price: 2.00, 
@@ -21,7 +26,16 @@ module.exports.list = function (req, res) {
 						price: 0.50,
 						categoryid: 1236
 					}];
-	res.json(mockData);
+
+	var totalCount = products.length;
+	var totalPages = Math.ceil(totalCount / appConfig.PAGE_SIZE)
+	var results = { 
+				totalCount: totalCount,
+				totalPages: totalPages,
+				products: products.slice(start, end)
+			};
+
+	res.json(results);
 };
 
 module.exports.detail = function(req, res) {
