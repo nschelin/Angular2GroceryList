@@ -9,6 +9,7 @@ const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 
 
 // route modules
@@ -32,6 +33,8 @@ app.use('/api', api);
 app.use('/js', express.static(jsPath));
 app.use('/css', express.static(cssPath));
 
+// connect to db
+mongoose.connect('mongodb://localhost/GroceryListDb');
 var server = http.createServer(app);
 server.listen(5000);
 

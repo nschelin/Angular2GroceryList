@@ -1,3 +1,8 @@
+'use strict';
+
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+const Product = require('../../../DbSchema/productSchema');
 
 module.exports.list = function (req, res) {
 	// get 'all items'
@@ -39,26 +44,40 @@ module.exports.list = function (req, res) {
 };
 
 module.exports.detail = function(req, res) {
-	var id = req.body.id;
-	// TODO: get item from db
-	var mockData = { id: 4567, name: "Milk", price: 2.00, categoryid: 1234 };
-	res.json(mockData);
+	var id = req.params.id;
+	var _id = new ObjectId(id);
+	Product.findById(_id , function(err, product){
+		if(err) { console.log('error'); res.json({ error: 'error' }); }
+		res.json(product);
+	});
 };
 
 module.exports.update = function(req, res) {
-	var id = req.body.id;
+	var id = req.params.id;
 	var json = req.body;
+	var _id = new ObjectId(id);
 
-	// TODO: get item from db and make changes
+	Product.findByIdAndUpdate(_id, { 
+					$set: { 
+							name: json.name, 
+							price: json.price,
+							categoryId: json.categoryId,
+							modified: new Date() 
+						}
+					}, 
+					{ new: true }, 
+			function(err, product) {
+		if(err) { console.log('error: ' + err); res.json({ error: 'error' }); }
 
-	res.send(json);
+		res.json(product);
+	});
 };
 
 module.exports.new = function(req, res) {
-	var json = req.body;
+	var product = new Product(req.body);
+	product.save(function(err, product){
+		if(err) { console.log('error'); res.json({ error: 'error' }); }
 
-	// TODO: create item and save to db
-
-	res.json(json);
-
+		res.json(product);
+	});
 }
