@@ -1,5 +1,15 @@
-
+'use strict';
 // uses global.appConfig
+
+let db;
+const MongoClient = require('mongodb').MongoClient;
+MongoClient.connect('mongodb://localhost:27017/GroceryListDb', function(err, database) {
+	if(!err) {
+		console.log('Connected to Db');
+		db = database;
+	}
+})
+
 
 module.exports.list = function (req, res) {
 	// get 'all items'
@@ -51,10 +61,19 @@ module.exports.update = function(req, res) {
 };
 
 module.exports.new = function(req, res) {
-	var json = req.body;
-
+	var category = req.body;
+	category.created = new Date();
+	category.modified = new Date();
 	// TODO: create item and save to db
-
-	res.json(json);
-
+	
+	let collection = db.collection('category');
+	collection.insertOne(category, function(err, result){
+		if(!err) {
+			console.log('Success!');
+			res.json(result.ops[0]);
+		}
+		else {
+			res.json(category);		
+		}
+	});
 }
