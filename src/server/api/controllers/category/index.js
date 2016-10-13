@@ -20,28 +20,28 @@ module.exports.list = function (req, res) {
 		page -= 1;
 	var start = appConfig.PAGE_SIZE * page;
 	var end = start + appConfig.PAGE_SIZE;
-	var categories = [ {
-							id: 1234,
-							name: 'Dairy'
-						},
-						{
-							id: 1235,
-							name: 'Meat'
-						},
-						{
-							id: 1236,
-							name: 'Produce'
-						}];
+	
+	let categoryCollection = db.collection('category');
+	let categories = [];
+	categoryCollection.find().toArray(function(err, documents){
+		if(!err) {
+			categories = documents;
+			var totalCount = categories.length;
+			var totalPages = Math.ceil(totalCount / appConfig.PAGE_SIZE)
+			var results = { 
+						totalCount: totalCount,
+						totalPages: totalPages,
+						categories: categories.slice(start, end)
+					};
 
-	var totalCount = categories.length;
-	var totalPages = Math.ceil(totalCount / appConfig.PAGE_SIZE)
-	var results = { 
-				totalCount: totalCount,
-				totalPages: totalPages,
-				categories: categories.slice(start, end)
-			};
+			res.json(results);
+		}
+		else {
+			res.json({ error: 'error' });
+		}
+	});
 
-	res.json(results);
+
 };
 
 module.exports.detail = function(req, res) {
@@ -66,8 +66,8 @@ module.exports.new = function(req, res) {
 	category.modified = new Date();
 	// TODO: create item and save to db
 	
-	let collection = db.collection('category');
-	collection.insertOne(category, function(err, result){
+	let categoryCollection = db.collection('category');
+	categoryCollection.insertOne(category, function(err, result){
 		if(!err) {
 			console.log('Success!');
 			res.json(result.ops[0]);
