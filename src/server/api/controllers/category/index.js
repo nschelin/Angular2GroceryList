@@ -9,6 +9,7 @@ module.exports.list = function (req, res) {
 	var page = req.query.page || 0;
 	if(page != 0)
 		page -= 1;
+	
 	var start = appConfig.PAGE_SIZE * page;
 	var end = start + appConfig.PAGE_SIZE;
 	

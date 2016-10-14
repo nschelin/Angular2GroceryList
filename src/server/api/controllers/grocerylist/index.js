@@ -1,3 +1,8 @@
+'use strict';
+
+const mongoose = require('mongoose');
+const Objectid = mongoose.Types.Objectid;
+const GroceryList = require('../../../DbSchema/groceryListSchema');
 
 module.exports.list = function (req, res) {
 	// get 'all items'
@@ -96,10 +101,15 @@ module.exports.update = function(req, res) {
 };
 
 module.exports.new = function(req, res) {
-	var json = req.body;
+	var groceryList = new GroceryList(req.body);
 
-	// TODO: create item and save to db
+	groceryList.salesTax = appConfig.salesTax;
+	groceryList.calculateTotals(function(){
+		
+		groceryList.save(function(err, groceryList){
+			if(err) { console.log('error: ' + err); res.json({ error: 'error' }); }
 
-	res.json(json);
-
+			res.json(groceryList);
+		});	
+	});
 }

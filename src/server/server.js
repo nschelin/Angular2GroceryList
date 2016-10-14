@@ -34,7 +34,11 @@ app.use('/js', express.static(jsPath));
 app.use('/css', express.static(cssPath));
 
 // connect to db
-mongoose.connect('mongodb://localhost/GroceryListDb');
+mongoose.connect(global.appConfig.databaseUri, function(err) {
+	if(err) { console.log('connection error: ' + err) }
+	console.log('Connected to Db');
+});
+
 var server = http.createServer(app);
 server.listen(5000);
 
