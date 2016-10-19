@@ -2,6 +2,7 @@
 
 // node
 const browserSync = require('browser-sync');
+const del = require('del');
 
 // gulp
 const gulp = require('gulp');
@@ -54,6 +55,11 @@ gulp.task('ts', function(){
 	// 			.pipe(gulp.dest(config.build.js))
 })
 
+gulp.task('clean', function(done) {
+	var jsPath = __dirname + "/src/client/app/js/*.js";
+	console.log(jsPath);
+	clean(jsPath, done);
+});
 
 
 // helper functions
@@ -80,4 +86,9 @@ function startBrowserSync() {
 		reloadDelay: 1000
 	};
 	browserSync(options);
+}
+
+function clean(path, done) {
+	console.log('Cleaning: ' + path);
+	del(path, done);
 }
