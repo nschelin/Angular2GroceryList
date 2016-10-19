@@ -1,3 +1,5 @@
+'use strict';
+
 // node
 const browserSync = require('browser-sync');
 
@@ -38,6 +40,21 @@ gulp.task('serve', function(){
 				console.log('Node Ended...');
 			})
 });
+
+gulp.task('ts', function(){
+	let tsProject = $.typescript.createProject('tsconfig.json');
+	let tsResult = tsProject.src()
+							.pipe($.typescript(tsProject));
+	return tsResult.js.pipe(gulp.dest('./src/client/app/js/'));
+	// return gulp.src(config.ts)
+	// 			.pipe($.typescript({
+	// 				noImplicitAny: true,
+	// 				module: 'commonjs',
+	// 			}))
+	// 			.pipe(gulp.dest(config.build.js))
+})
+
+
 
 // helper functions
 
