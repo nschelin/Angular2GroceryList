@@ -3,75 +3,79 @@
 // node
 const browserSync = require('browser-sync');
 const del = require('del');
+const open = require('open');
+const path = require('path');
 
 // gulp
 const gulp = require('gulp');
 const $ = require('gulp-load-plugins')({ lazy: true });
+const config = require('./gulp.config')();
+
+// typescript
+const tsProject = $.typescript.createProject('tsconfig.json');
+
 
 gulp.task('help', $.taskListing);
 gulp.task('default', ['help']);
 
 
-gulp.task('serve', function(){
+gulp.task('serve', ['clean','ts'], function(){
+	log('starting...');
 	var nodeOptions = {
-		script: './src/server/server.js',
+		script: config.server.serve,
 		delayTime: 1,
 		env: {
-			'PORT': 5000,
+			'PORT': config.server.PORT,
 			'NODE_ENV': 'dev'
 		},
-		watch: ['./src/']
+		watch: config.watch
 	};
+
+	gulp.watch(config.client.path + '/**/*.ts', ['ts']);
+
 	return $.nodemon(nodeOptions)
 			.on('restart', function(){
-				console.log('Node Restarted...');
+				log('Node Restarted...');
 				setTimeout(function() {
 					browserSync.notify('Reloading now...');
 					browserSync.reload({ stream: false });
 				}, 1000);
 			})
 			.on('start', function() {
-				console.log('Node Started...');
+				log('Node Started...');
+				//open('http://localhost:' + config.server.bsPORT);
 				startBrowserSync();
 			})
 			.on('crashed', function() {
-				console.log('Node Crashed...');
+				log('Node Crashed...');
 			})
 			.on('end', function() {
-				console.log('Node Ended...');
+				log('Node Ended...');
 			})
 });
 
 gulp.task('ts', function(){
-	let tsProject = $.typescript.createProject('tsconfig.json');
-	let tsResult = tsProject.src()
-							.pipe($.typescript(tsProject));
-	return tsResult.js.pipe(gulp.dest('./src/client/app/js/'));
-	// return gulp.src(config.ts)
-	// 			.pipe($.typescript({
-	// 				noImplicitAny: true,
-	// 				module: 'commonjs',
-	// 			}))
-	// 			.pipe(gulp.dest(config.build.js))
-})
+	return tsProject.src()
+					.pipe(tsProject())
+					.pipe(gulp.dest(config.client.js));
+});
 
-gulp.task('clean', function(done) {
-	var jsPath = __dirname + "/src/client/app/js/*.js";
-	console.log(jsPath);
-	clean(jsPath, done);
+gulp.task('clean', function() {
+	var jsPath = path.resolve(__dirname, config.client.js);
+	return clean(jsPath);
 });
 
 
 // helper functions
-
+////////////////////////////////////////////////////////////////////
 function startBrowserSync() {
-	var port = 5000;
-	console.log('Starting browser sync on port: ' + port);
+	log('Starting browser sync on port: ' + config.server.bsPORT);
 
 	var options = {
-		proxy: 'localhost:' + port,
-		files: [ './src/client/', './src/server/'],
-		open: false,
+		port: config.server.bsPORT,
+		proxy: 'localhost:' + config.server.PORT,
+		files: [ config.client.path, config.server.path ],
+		open: "local",
 		ghostMode: {
 			clicks: true,
 			location: true,
@@ -88,7 +92,20 @@ function startBrowserSync() {
 	browserSync(options);
 }
 
-function clean(path, done) {
-	console.log('Cleaning: ' + path);
-	del(path, done);
+function log(message) {
+	if(typeof(message) === 'object') {
+		for(let item in message) {
+			if(mesage.hasOwnProperty(item)) {
+				$.util.log($.util.colors.cyan(message[item]));
+			}
+		}
+	}
+	else {
+		$.util.log($.util.colors.cyan(message));
+	}
+}
+
+function clean(path) {
+	log('Cleaning: ' + path);
+	return del.sync(path);
 }

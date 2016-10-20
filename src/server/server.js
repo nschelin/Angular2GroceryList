@@ -43,6 +43,6 @@ mongoose.connect(global.appConfig.databaseUri, function(err) {
 });
 
 var server = http.createServer(app);
-server.listen(5000);
+server.listen(3000);
 
 
