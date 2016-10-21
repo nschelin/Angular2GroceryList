@@ -19,7 +19,7 @@ gulp.task('help', $.taskListing);
 gulp.task('default', ['help']);
 
 
-gulp.task('serve', ['clean','ts'], function(){
+gulp.task('serve', ['clean','templates', 'ts'], function(){
 	log('starting...');
 	var nodeOptions = {
 		script: config.server.serve,
@@ -57,14 +57,22 @@ gulp.task('serve', ['clean','ts'], function(){
 gulp.task('ts', function(){
 	return tsProject.src()
 					.pipe(tsProject())
+					.pipe($.flatten())
 					.pipe(gulp.dest(config.client.js));
 });
 
 gulp.task('clean', function() {
 	var jsPath = path.resolve(__dirname, config.client.js + "/*.js");
-	return clean(jsPath);
+	var templatePath = path.resolve(__dirname, './src/client/app/templates/*.*');
+	return clean([jsPath, templatePath]);
 });
 
+gulp.task('templates', function(){
+	var templates = path.resolve(__dirname, "./src/client/app/ts/*/*.html");
+	return gulp.src(templates)
+			   .pipe($.flatten())
+			   .pipe(gulp.dest('./src/client/app/templates/'));
+});
 
 // helper functions
 ////////////////////////////////////////////////////////////////////

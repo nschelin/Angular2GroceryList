@@ -20,6 +20,7 @@ var jsPath = path.resolve(__dirname, '../client/app/js');
 var cssPath = path.resolve(__dirname, '../client/app/css');
 var nodeModules = path.resolve(__dirname, '../../node_modules/')
 var angularApp = path.resolve(__dirname, '../client/app');
+var templatePath = path.resolve(__dirname, '../client/app/templates');
 
 let app = express(); 
 
@@ -35,6 +36,7 @@ app.use('/js', express.static(jsPath));
 app.use('/css', express.static(cssPath));
 app.use('/node_modules', express.static(nodeModules));
 app.use('/app', express.static(angularApp));
+app.use('/templates', express.static(templatePath));
 
 // connect to db
 mongoose.connect(global.appConfig.databaseUri, function(err) {
