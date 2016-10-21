@@ -3,7 +3,7 @@
 // node
 const browserSync = require('browser-sync');
 const del = require('del');
-const open = require('open');
+//const open = require('open');
 const path = require('path');
 
 // gulp
@@ -61,7 +61,7 @@ gulp.task('ts', function(){
 });
 
 gulp.task('clean', function() {
-	var jsPath = path.resolve(__dirname, config.client.js);
+	var jsPath = path.resolve(__dirname, config.client.js + "/*.js");
 	return clean(jsPath);
 });
 
