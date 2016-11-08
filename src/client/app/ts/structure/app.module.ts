@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 // need to fix
 import { AppNavigationComponent } from '../navigation/app.navigation'; 
 import { GroceryListComponent } from '../gl-list/app.glist.list';
+import { GroceryListService } from '../gl-list/app.glist.service';
 
 @NgModule({
 	imports: [ BrowserModule ],
 	declarations: [ AppComponent, AppNavigationComponent, GroceryListComponent ],
-	bootstrap: [ AppComponent ]
+	bootstrap: [ AppComponent ],
+	providers: [ GroceryListService ]
 })
 
 export class AppModule { }

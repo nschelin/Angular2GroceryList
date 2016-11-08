@@ -54,10 +54,12 @@ gulp.task('serve', ['clean', 'ts', 'templates', 'copyHtml', 'copySysJs', 'copyCs
 			})
 });
 
-// TODO: ISSUES
+// TODO: ISSUES FIX!
 gulp.task('ts', function(){
 	return tsProject.src()
 					.pipe(tsProject())
+					.pipe($.sourcemaps.init())
+					.pipe($.sourcemaps.write())
 					.pipe(gulp.dest('./dist/app/js'));
 });
 
