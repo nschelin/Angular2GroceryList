@@ -19,7 +19,7 @@ gulp.task('help', $.taskListing);
 gulp.task('default', ['help']);
 
 
-gulp.task('serve', ['clean', 'ts', 'copyHtml', 'copySysJs', 'copyCss'], function(){
+gulp.task('serve', ['clean', 'ts', 'templates', 'copyHtml', 'copySysJs', 'copyCss'], function(){
 	log('starting...');
 	var nodeOptions = {
 		script: config.server.serve,
@@ -30,7 +30,7 @@ gulp.task('serve', ['clean', 'ts', 'copyHtml', 'copySysJs', 'copyCss'], function
 		},
 		watch: config.watch
 	};
-	return; // TEMP Debug
+	//return; // TEMP Debug
 	gulp.watch(config.client.path + '/**/*.ts', ['ts']);
 
 	return $.nodemon(nodeOptions)
@@ -64,6 +64,11 @@ gulp.task('ts', function(){
 gulp.task('clean', function() {
 	return clean('./dist');
 });
+
+gulp.task('templates', function(){
+	return gulp.src('./src/client/app/ts/**/*.html')
+				.pipe(gulp.dest('./dist/app/js'));
+})
 
 gulp.task('copyCss', function() {
 	return gulp.src(['./src/client/app/css/**/*.css'])

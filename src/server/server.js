@@ -16,10 +16,11 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const api = require('./api');
 
-var jsPath = path.resolve(__dirname, './dist/app/js');
-var cssPath = path.resolve(__dirname, './dist/app/css');
-var nodeModules = path.resolve(__dirname, '../node_modules/')
-var angularApp = path.resolve(__dirname, './dist/app');
+var jsPath = path.resolve(__dirname, '../../dist/app/js');
+var cssPath = path.resolve(__dirname, '../../dist/app/css');
+var nodeModules = path.resolve(__dirname, '../../node_modules/')
+var angularApp = path.resolve(__dirname, '../../dist/app');
+console.log(angularApp);
 //var templatePath = path.resolve(__dirname, '../client/app/templates');
 
 let app = express(); 
@@ -32,10 +33,11 @@ app.use(cookieParser());
 // routes
 app.use('/', routes);
 app.use('/api', api);
+app.use('/app', express.static(angularApp));
 app.use('/js', express.static(jsPath));
 app.use('/app/css', express.static(cssPath));
 app.use('/node_modules', express.static(nodeModules));
-app.use('/app', express.static(angularApp));
+
 //app.use('/templates', express.static(templatePath));
 
 // connect to db
