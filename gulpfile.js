@@ -12,14 +12,14 @@ const $ = require('gulp-load-plugins')({ lazy: true });
 const config = require('./gulp.config')();
 
 // typescript
-const tsProject = $.typescript.createProject('tsconfig.json');
+const tsProject = $.typescript.createProject('tsconfig.json', { declaration: true });
 
 
 gulp.task('help', $.taskListing);
 gulp.task('default', ['help']);
 
 
-gulp.task('serve', ['clean','templates', 'ts'], function(){
+gulp.task('serve', ['clean', 'ts', 'copyHtml', 'copySysJs', 'copyCss'], function(){
 	log('starting...');
 	var nodeOptions = {
 		script: config.server.serve,
@@ -30,7 +30,7 @@ gulp.task('serve', ['clean','templates', 'ts'], function(){
 		},
 		watch: config.watch
 	};
-
+	return; // TEMP Debug
 	gulp.watch(config.client.path + '/**/*.ts', ['ts']);
 
 	return $.nodemon(nodeOptions)
@@ -54,24 +54,30 @@ gulp.task('serve', ['clean','templates', 'ts'], function(){
 			})
 });
 
+// TODO: ISSUES
 gulp.task('ts', function(){
 	return tsProject.src()
 					.pipe(tsProject())
-					.pipe($.flatten())
-					.pipe(gulp.dest(config.client.js));
+					.pipe(gulp.dest('./dist/app/js'));
 });
 
 gulp.task('clean', function() {
-	var jsPath = path.resolve(__dirname, config.client.js + "/*.js");
-	var templatePath = path.resolve(__dirname, './src/client/app/templates/*.*');
-	return clean([jsPath, templatePath]);
+	return clean('./dist');
 });
 
-gulp.task('templates', function(){
-	var templates = path.resolve(__dirname, "./src/client/app/ts/*/*.html");
-	return gulp.src(templates)
-			   .pipe($.flatten())
-			   .pipe(gulp.dest('./src/client/app/templates/'));
+gulp.task('copyCss', function() {
+	return gulp.src(['./src/client/app/css/**/*.css'])
+			.pipe(gulp.dest('./dist/app/css'));
+});
+
+gulp.task('copySysJs', function() {
+	return gulp.src(['./src/client/app/systemjs.config.js'])
+			.pipe(gulp.dest('./dist/app/'));
+});
+
+gulp.task('copyHtml', function(){
+	return gulp.src(['./src/client/index.html'])
+			.pipe(gulp.dest('./dist'));
 });
 
 // helper functions
@@ -83,7 +89,7 @@ function startBrowserSync() {
 		port: config.server.bsPORT,
 		proxy: 'localhost:' + config.server.PORT,
 		files: [ config.client.path, config.server.path ],
-		open: "local",
+		open: false,
 		ghostMode: {
 			clicks: true,
 			location: true,

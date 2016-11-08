@@ -16,11 +16,11 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const api = require('./api');
 
-var jsPath = path.resolve(__dirname, '../client/app/js');
-var cssPath = path.resolve(__dirname, '../client/app/css');
-var nodeModules = path.resolve(__dirname, '../../node_modules/')
-var angularApp = path.resolve(__dirname, '../client/app');
-var templatePath = path.resolve(__dirname, '../client/app/templates');
+var jsPath = path.resolve(__dirname, './dist/app/js');
+var cssPath = path.resolve(__dirname, './dist/app/css');
+var nodeModules = path.resolve(__dirname, '../node_modules/')
+var angularApp = path.resolve(__dirname, './dist/app');
+//var templatePath = path.resolve(__dirname, '../client/app/templates');
 
 let app = express(); 
 
@@ -33,18 +33,17 @@ app.use(cookieParser());
 app.use('/', routes);
 app.use('/api', api);
 app.use('/js', express.static(jsPath));
-app.use('/css', express.static(cssPath));
+app.use('/app/css', express.static(cssPath));
 app.use('/node_modules', express.static(nodeModules));
 app.use('/app', express.static(angularApp));
-app.use('/templates', express.static(templatePath));
+//app.use('/templates', express.static(templatePath));
 
 // connect to db
 mongoose.connect(global.appConfig.databaseUri, function(err) {
-	if(err) { console.log('connection error: ' + err) }
+	if(err) { console.log('connection error: ' + err) ; return; }
 	console.log('Connected to Db');
 });
 
 var server = http.createServer(app);
 server.listen(3000);
-
 

@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 
 // will error due to weird file strucutre
 // need to fix
-import { AppNavigationComponent } from './app.navigation'; 
+import { AppNavigationComponent } from '../navigation/app.navigation'; 
 
 @NgModule({
 	imports: [ BrowserModule ],
