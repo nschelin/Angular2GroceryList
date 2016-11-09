@@ -5,6 +5,8 @@ const browserSync = require('browser-sync');
 const del = require('del');
 //const open = require('open');
 const path = require('path');
+const merge = require('merge2')
+
 
 // gulp
 const gulp = require('gulp');
@@ -56,11 +58,14 @@ gulp.task('serve', ['clean', 'ts', 'templates', 'copyHtml', 'copySysJs', 'copyCs
 
 // TODO: ISSUES FIX!
 gulp.task('ts', function(){
-	return tsProject.src()
-					.pipe(tsProject())
+	var tsResult = tsProject.src()
 					.pipe($.sourcemaps.init())
-					.pipe($.sourcemaps.write())
-					.pipe(gulp.dest('./dist/app/js'));
+					.pipe(tsProject())
+	return merge([
+		tsResult.dts.pipe(gulp.dest('./dist/app/def')),
+		tsResult.js.pipe($.sourcemaps.write()).pipe(gulp.dest('./dist/app/js'))
+	]);
+					
 });
 
 gulp.task('clean', function() {
