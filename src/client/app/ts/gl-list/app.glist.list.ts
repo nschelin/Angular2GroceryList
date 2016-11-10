@@ -11,10 +11,12 @@ export class GroceryListComponent implements OnInit {
 	constructor(private glistService: GroceryListService) { }
 
 	getGroceryLists(): void {
-		this.glistService.getGroceryListsLists().then(glists => this.groceryLists = glists);
+		this.glistService.getGroceryListsLists().then(glists => {
+			this.groceryLists = glists;
+		});
 	}
 
 	ngOnInit(): void {
-
+		this.getGroceryLists();
 	}
 }

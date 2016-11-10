@@ -16,11 +16,11 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const api = require('./api');
 
-var jsPath = path.resolve(__dirname, '../../dist/app/js');
-var cssPath = path.resolve(__dirname, '../../dist/app/css');
+var jsPath = path.resolve(__dirname, '../../build/app/js');
+var cssPath = path.resolve(__dirname, '../../build/app/css');
 var nodeModules = path.resolve(__dirname, '../../node_modules/')
-var angularApp = path.resolve(__dirname, '../../dist/app');
-console.log(angularApp);
+var angularApp = path.resolve(__dirname, '../../build/app');
+
 //var templatePath = path.resolve(__dirname, '../client/app/templates');
 
 let app = express(); 

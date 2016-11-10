@@ -21,7 +21,7 @@ gulp.task('help', $.taskListing);
 gulp.task('default', ['help']);
 
 
-gulp.task('serve', ['clean', 'ts', 'templates', 'copyHtml', 'copySysJs', 'copyCss'], function(){
+gulp.task('serve:dev', ['clean', 'ts', 'templates', 'spa', 'sysjs', 'css'], function(){
 	log('starting...');
 	var nodeOptions = {
 		script: config.server.serve,
@@ -32,7 +32,7 @@ gulp.task('serve', ['clean', 'ts', 'templates', 'copyHtml', 'copySysJs', 'copyCs
 		},
 		watch: config.watch
 	};
-	//return; // TEMP Debug
+	
 	gulp.watch(config.client.path + '/**/*.ts', ['ts']);
 
 	return $.nodemon(nodeOptions)
@@ -62,34 +62,39 @@ gulp.task('ts', function(){
 					.pipe($.sourcemaps.init())
 					.pipe(tsProject())
 	return merge([
-		tsResult.dts.pipe(gulp.dest('./dist/app/def')),
-		tsResult.js.pipe($.sourcemaps.write()).pipe(gulp.dest('./dist/app/js'))
+		tsResult.dts.pipe(gulp.dest('./build/app/def')),
+		tsResult.js.pipe($.sourcemaps.write()).pipe(gulp.dest('./build/app/js'))
 	]);
 					
 });
 
+// gulp.task('server', function() {
+// 	return gulp.src('./src/server/**')
+// 				.pipe(gulp.dest('./build/server'));
+// })
+
 gulp.task('clean', function() {
-	return clean('./dist');
+	return clean('./build');
 });
 
 gulp.task('templates', function(){
 	return gulp.src('./src/client/app/ts/**/*.html')
-				.pipe(gulp.dest('./dist/app/js'));
+				.pipe(gulp.dest('./build/app/js'));
 })
 
-gulp.task('copyCss', function() {
+gulp.task('css', function() {
 	return gulp.src(['./src/client/app/css/**/*.css'])
-			.pipe(gulp.dest('./dist/app/css'));
+			.pipe(gulp.dest('./build/app/css'));
 });
 
-gulp.task('copySysJs', function() {
+gulp.task('sysjs', function() {
 	return gulp.src(['./src/client/app/systemjs.config.js'])
-			.pipe(gulp.dest('./dist/app/'));
+			.pipe(gulp.dest('./build/app/'));
 });
 
-gulp.task('copyHtml', function(){
+gulp.task('spa', function(){
 	return gulp.src(['./src/client/index.html'])
-			.pipe(gulp.dest('./dist'));
+			.pipe(gulp.dest('./build'));
 });
 
 // helper functions
@@ -100,7 +105,7 @@ function startBrowserSync() {
 	var options = {
 		port: config.server.bsPORT,
 		proxy: 'localhost:' + config.server.PORT,
-		files: [ config.client.path, config.server.path ],
+		files: [ config.client.path ],
 		open: false,
 		ghostMode: {
 			clicks: true,
