@@ -41,10 +41,10 @@ app.use('/node_modules', express.static(nodeModules));
 //app.use('/templates', express.static(templatePath));
 
 // connect to db
-// mongoose.connect(global.appConfig.databaseUri, function(err) {
-// 	if(err) { console.log('connection error: ' + err) ; return; }
-// 	console.log('Connected to Db');
-// });
+mongoose.connect(global.appConfig.databaseUri, function(err) {
+	if(err) { console.log('connection error: ' + err) ; return; }
+	console.log('Connected to Db');
+});
 
 var server = http.createServer(app);
 server.listen(3000);

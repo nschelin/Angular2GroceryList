@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GroceryListService } from '../gl-list/app.glist.service';
+import { GroceryList } from '../classes/GroceryList';
 
 @Component({
 	selector: 'grocerylist-list',
@@ -7,12 +8,16 @@ import { GroceryListService } from '../gl-list/app.glist.service';
 })
 
 export class GroceryListComponent implements OnInit {
-	groceryLists: any[];	
-	constructor(private glistService: GroceryListService) { }
+	groceryListData: any;
+	groceryLists: GroceryList[];	
+	constructor(private glistService: GroceryListService) {
+		this.groceryListData = { groceryLists: new Array<any>() };
+	}
 
 	getGroceryLists(): void {
-		this.glistService.getGroceryListsLists().then(glists => {
-			this.groceryLists = glists;
+		this.glistService.getGroceryListsLists().then(gListData => {
+			this.groceryListData = gListData;
+			this.groceryLists = gListData.groceryLists as GroceryList[];
 		});
 	}
 

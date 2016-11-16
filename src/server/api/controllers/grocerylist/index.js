@@ -13,59 +13,67 @@ module.exports.list = function (req, res) {
 		page -= 1;
 	var start = appConfig.PAGE_SIZE * page;
 	var end = start + appConfig.PAGE_SIZE;
-	var groceryLists = [{ id: 789, 
-					 total: 36.85, 
-					 subtotal: 33.5, 
-					 products: [{
-							id: 4567,
-							name: 'Milk',
-							price: 2.00, 
-							categoryid: 1234,
-							count: 1
-						},
-						{
-							id: 4568,
-							name: 'Steak',
-							price: 10.00,
-							categoryid: 1235,
-							count: 2
-					}]
-					},
-					{ id: 790, 
-					 total: 24.20, 
-					 subtotal: 22.00, 
-					 products: [{
-						id: 4567,
-						name: 'Milk',
-						price: 2.00, 
-						categoryid: 1234,
-						count: 1
-					},
-					{
-						id: 4568,
-						name: 'Steak',
-						price: 10.00,
-						categoryid: 1235,
-						count: 3
-					},
-					{
-						id: 4569,
-						name: 'Corn',
-						price: 0.50,
-						categoryid: 1236,
-						count: 3
-					}]}
-				];
-
-	var totalCount = groceryLists.length;
-	var totalPages = Math.ceil(totalCount / appConfig.PAGE_SIZE)
-	var results = { 
+	
+	GroceryList.find({}, function(err, groceryLists) {
+		if (err) { console.log(err) }
+			
+		var totalCount = groceryLists.length;
+		var totalPages = Math.ceil(totalCount / appConfig.PAGE_SIZE)
+		var results = { 
 				totalCount: totalCount,
 				totalPages: totalPages,
 				groceryLists: groceryLists.slice(start, end)
 			};
 
 	res.json(results);
+
+
+	});
+	// var groceryLists = [{ id: 789, 
+	// 				 total: 36.85, 
+	// 				 subtotal: 33.5, 
+	// 				 products: [{
+	// 						id: 4567,
+	// 						name: 'Milk',
+	// 						price: 2.00, 
+	// 						categoryid: 1234,
+	// 						count: 1
+	// 					},
+	// 					{
+	// 						id: 4568,
+	// 						name: 'Steak',
+	// 						price: 10.00,
+	// 						categoryid: 1235,
+	// 						count: 2
+	// 				}]
+	// 				},
+	// 				{ id: 790, 
+	// 				 total: 24.20, 
+	// 				 subtotal: 22.00, 
+	// 				 products: [{
+	// 					id: 4567,
+	// 					name: 'Milk',
+	// 					price: 2.00, 
+	// 					categoryid: 1234,
+	// 					count: 1
+	// 				},
+	// 				{
+	// 					id: 4568,
+	// 					name: 'Steak',
+	// 					price: 10.00,
+	// 					categoryid: 1235,
+	// 					count: 3
+	// 				},
+	// 				{
+	// 					id: 4569,
+	// 					name: 'Corn',
+	// 					price: 0.50,
+	// 					categoryid: 1236,
+	// 					count: 3
+	// 				}]}
+	// 			];
+
+	
 };
 
 module.exports.detail = function(req, res) {

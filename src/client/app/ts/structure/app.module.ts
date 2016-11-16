@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
@@ -10,7 +11,7 @@ import { GroceryListComponent } from '../gl-list/app.glist.list';
 import { GroceryListService } from '../gl-list/app.glist.service';
 
 @NgModule({
-	imports: [ BrowserModule ],
+	imports: [ BrowserModule, HttpModule ],
 	declarations: [ AppComponent, AppNavigationComponent, GroceryListComponent ],
 	bootstrap: [ AppComponent ],
 	providers: [ GroceryListService ]
